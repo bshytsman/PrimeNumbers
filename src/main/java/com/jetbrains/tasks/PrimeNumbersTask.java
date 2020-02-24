@@ -16,15 +16,13 @@ public class PrimeNumbersTask {
     private final List<Long> dividers = new ArrayList<>();
     private final OutputData outputData = new OutputData();
     private final long MAX_CHECK_VALUE = 10_000_000_000L;
-//    private final long MAX_CHECK_VALUE = 10_000_000L;
     private final int MAX_DIVIDER = (int) Math.round(Math.sqrt(MAX_CHECK_VALUE)) + 1;
 
     public void doStudy() {
         createOutputFile();
 
         for (long i = 1; i <= MAX_CHECK_VALUE; i++) {
-            final boolean simple = isPrime(i);
-            if (simple) {
+            if (isPrime(i)) {
                 outputData.appendData(i);
                 if (outputData.needDisplayData()) {
                     displayData();
@@ -39,13 +37,13 @@ public class PrimeNumbersTask {
 
     private void displayData() {
         appendOutputFile();
-        trace(formatLong(outputData.lastSimpleNumber) + " #" + formatLong(outputData.totalNumsCalculated));
+        trace(formatLong(outputData.lastPrimeNumber) + " #" + formatLong(outputData.totalNumsCalculated));
         outputData.resetData();
     }
 
     private boolean isPrime(long number) {
         if (number == 1) {
-            return true;
+            return false;
         }
 
         boolean prime = true;
@@ -99,9 +97,9 @@ public class PrimeNumbersTask {
         return String.format("%,d", number);
     }
 
-    class OutputData {
+    private static class OutputData {
         boolean dataShown;
-        long lastSimpleNumber;
+        long lastPrimeNumber;
         long totalNumsCalculated;
         List<Long> buffer;
         LocalDateTime shownTime;
@@ -113,7 +111,7 @@ public class PrimeNumbersTask {
 
         void appendData(final long number) {
             dataShown = false;
-            lastSimpleNumber = number;
+            lastPrimeNumber = number;
             totalNumsCalculated++;
             buffer.add(number);
         }
@@ -129,7 +127,7 @@ public class PrimeNumbersTask {
 
         private void resetData() {
             dataShown = true;
-            lastSimpleNumber = 0;
+            lastPrimeNumber = 0;
             buffer = new ArrayList<>();
             shownTime = LocalDateTime.now();
         }
